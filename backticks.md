@@ -88,6 +88,7 @@ In your project root's `composer.json`, add your package to the `require` and `r
             "url": "addons/example"
         }
     ]
+ }
 ```
 
 Run composer update from your _project root_ (not your addon directory).
