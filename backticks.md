@@ -17,7 +17,7 @@ During development however, you can keep it somewhere on your local filesystem a
 
 An addon consists of at least a `composer.json` and a service provider. Your directory may be placed anywhere, but for the sake of this example, we'll put it in `addons/example`
 
-``` files
+```files
 /
 |-- addons/
 |   `-- example/
@@ -29,7 +29,7 @@ An addon consists of at least a `composer.json` and a service provider. Your dir
 `-- composer.json
 ```
 
-``` json
+```json
 {
     "name": "acme/example",
     "description": "Example Addon",
@@ -62,7 +62,7 @@ An addon consists of at least a `composer.json` and a service provider. Your dir
 
 Note the service provider should extend `Statamic\Providers\AddonServiceProvider`, and not Illuminate\Support\ServiceProvider. The Statamic subclass provides you with some helpers to reduce boilerplate when compared to stock Laravel.
 
-``` php
+```php
 <?php
 
 namespace Acme\Example;
@@ -92,7 +92,7 @@ In your project root's `composer.json`, add your package to the `require` and `r
 
 Run composer update from your _project root_ (not your addon directory).
 
-``` bash
+```bash
 composer update
 ```
 
@@ -112,7 +112,7 @@ Your addon is now installed. You should be able to go to `/cp/addons` and see it
 
 A public addon is one available as a composer package on packagist.org. Simple require it with composer:
 
-``` bash
+```bash
 composer require vendor/package
 ```
 
@@ -126,7 +126,7 @@ Download the package to a directory of your choosing.
 
 In your project root's `composer.json`, add the package to the `require` and `repositories` sections, like so:
 
-``` json
+```json
 {
     ...
 
@@ -147,7 +147,7 @@ In your project root's `composer.json`, add the package to the `require` and `re
 
 Run composer update from your project root:
 
-``` bash
+```bash
 composer update
 ```
 
@@ -158,7 +158,7 @@ After the composer package has been brought in, Statamic will automatically acti
 
 You may register your various addon components by adding their class names to corresponding arrays:
 
-``` php
+```php
 protected $tags = [
     \Acme\Example\Tags\First::class,
     \Acme\Example\Tags\Second::class,
@@ -189,7 +189,7 @@ protected $commands = [
 
 In your service provider, you may register any number of stylesheets or scripts by providing their full paths.
 
-``` php
+```php
 protected $scripts = [
     __DIR__.'/../resources/js/example.js'
 ];
@@ -203,7 +203,7 @@ This will do two things:
 - Statamic will load the respective files in the Control Panel. It will assume they exist in `public/vendor/[vendor]/[package].js` and `css` directories.
 - Mark the file for publishing when the `artisan vendor:publish` command is used.
 
-``` bash
+```bash
 php artisan vendor:publish --provider=YourServiceProvider --force
 ```
 
@@ -211,7 +211,7 @@ When an end user installs or updates your addon, the `vendor:publish` command wi
 
 > During development of your addon, rather than constantly running `vendor:publish`, consider symlinking your directory:
 >
-> ``` bash
+> ```bash
 > ln -s /path/to/addons/example/resources public/vendor/example/package
 > ```
 
@@ -219,7 +219,7 @@ When an end user installs or updates your addon, the `vendor:publish` command wi
 
 You may also mark generic assets for publishing by providing a `publishables` array with the full path to the  origin and the destination directory.
 
-``` php
+```php
 protected $publishables = [
     __DIR__.'/../resources/images' => 'images',
 ];
@@ -231,7 +231,7 @@ protected $publishables = [
 
 You may register three types of routes in your service provider.
 
-``` php
+```php
 protected $routes = [
     'cp' => __DIR__.'/../routes/cp.php',
     'actions' => __DIR__.'/../routes/actions.php',
@@ -257,7 +257,7 @@ Web routes have no prefix and no Statamic middleware attached. They will be adde
 
 When referencing a controller in a route, it will automatically be namespaced to your addon's root namespace.
 
-``` json
+```json
 "autoload": {
     "psr-4": {
         "Acme\\Example\\": "src"
@@ -265,13 +265,13 @@ When referencing a controller in a route, it will automatically be namespaced to
 },
 ```
 
-``` php
+```php
 Route::get('/', 'ExampleController@index'); // Acme\Example\ExampleController
 ```
 
 If you'd prefer not to have separate route files, you can write routes into a closure directly in your service provider's `boot` method.
 
-``` php
+```php
 public function boot()
 {
     parent::boot();
@@ -300,7 +300,7 @@ Words aligning with core Statamic concepts will automatically be converted to th
 
 You're free to use these words as your route parameters, but be aware they will automatically attempt to convert to the respective objects. For example:
 
-``` php
+```php
 public function example(Request $request, $entry)
 {
     // Given a route of "/example/{entry}", when visiting "/example/123"
@@ -314,7 +314,7 @@ public function example(Request $request, $entry)
 You may push your own middleware onto respective middleware groups using the `$middlewareGroups` property.
 The keys are the names of the groups, and the values are arrays of middleware classes to be applied.
 
-``` php
+```php
 protected $middlewareGroups = [
     'statamic.cp.authenticated' => [
         YourCpMiddleware::class,
@@ -339,7 +339,7 @@ Available middleware groups are:
 
 Any views located in your `resources/views` directory will automatically be available to use in your code using your package name as the namespace.
 
-``` files
+```files
 /
 |-- src/
 `-- resources/
@@ -347,17 +347,17 @@ Any views located in your `resources/views` directory will automatically be avai
         `-- foo.blade.php
 ```
 
-``` php
+```php
 // assuming your package is named vendor/my-addon
 return view('my-addon::foo');
 ```
 
 If you want to customize the namespace, you can set the `$viewNamespace` property on your provider:
 
-``` php
+```php
 protected $viewNamespace = 'custom';
 ```
-``` php
+```php
 return view('custom::foo');
 ```
 
@@ -365,7 +365,7 @@ return view('custom::foo');
 
 You may register any number of event listeners or subscribers the same way you would in a traditional Laravel application's EventServiceProvider – by using a `$listen` or `$subscribes` array:
 
-``` php
+```php
 protected $listen = [
     'Acme\Example\Events\OrderShipped' => [
         'Acme\Example\Listeners\SendShipmentNotification',
@@ -384,7 +384,7 @@ Consult the [Laravel event documentation](https://laravel.com/docs/master/events
 
 To define a schedule from your addon, you can add a `schedule` method just like you would typically see in a Laravel application's App\Console\Kernel class.
 
-``` php
+```php
 protected function schedule($schedule)
 {
     $schedule->command('something')->daily();
