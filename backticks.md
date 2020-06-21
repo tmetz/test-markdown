@@ -77,7 +77,7 @@ class ServiceProvider extends AddonServiceProvider
 
 In your project root's `composer.json`, add your package to the `require` and `repositories` sections, like so:
 
-``` json
+```json
 {
     "require": {
         "acme/example": "*"
