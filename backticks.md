@@ -144,6 +144,7 @@ In your project root's `composer.json`, add the package to the `require` and `re
             "url": "addons/example"
         }
     ]
+ }
 ```
 
 Run composer update from your project root:
