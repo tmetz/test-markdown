@@ -12,3 +12,4 @@
 
 [DefconMeshnet Matrix](https://[2001:4860:4860::8888]/)
 
+https://[200:2c03:79b4:4257:ce90:7582:4c5a:d946]
